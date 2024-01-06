@@ -1,3 +1,5 @@
+<img src="docs/IRSW.png" div align=center />
+
 # IRSW
 Intelligent Remote Sensing Workflow
 
