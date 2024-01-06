@@ -1,0 +1,1 @@
+/home/csu/Downloads/cq_segment/cq_mmseg/cliper/data/small_ss.tif	ss.shp

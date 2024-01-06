@@ -42,16 +42,21 @@ def tif2shp(tif_path,shp_path):
         Poly_layer.DeleteFeature(int(pFeatureFID))
 
     # noqa:
+        # Create confidence field
     confidentField=ogr.FeildDefn('confidence',ogr.OFTReal)
     confidentField.SetPrecision(8)
     Poly_layer.CreateField(confidentField)
     
-    index=pFeatureDef.GetFieldIndex('confidence')
-    oField=pFeatureDef.GetFieldDefn(index)
-    fieldName=oField.GetNameRef()
-    for feature in Poly_layer:
-        input=np.random.randint(5,10)/10
-        feature.SetField2(fieldName,input)
+    # index=pFeatureDef.GetFieldIndex('confidence')
+    # oField=pFeatureDef.GetFieldDefn(index)
+    # fieldName=oField.GetNameRef()
+    for pFeature in Poly_layer:
+        NumOfDefn = pFeature.GetFieldCount() 
+
+        input=np.random.randint(5,10)/10 # 写入的字段
+        # pFeature.SetField2(fieldName,input)
+        feature.SetField(NumOfDefn-1,input)
+
         Poly_layer.SetFeature(feature)
         feature=None
 
