@@ -3,7 +3,7 @@ import numpy as np
 from osgeo import gdal,ogr,osr
 
 
-def tif2shp(tif_path,shp_path):
+def tif2shp(tif_path,shp_path,base_field='value'):
     """
     .tif raster data to .shp data
     tif_path: raster data path
@@ -24,11 +24,12 @@ def tif2shp(tif_path,shp_path):
     # Create Layer
     Poly_layer=Polygon.CreateLayer('面',srs=prj,geom_type=ogr.wkbMultiPolygon)
     # Create value field (base field)
-    valueField=ogr.FeildDefn('value',ogr.OFTReal) 
+    valueField=ogr.FeildDefn(base_field,ogr.OFTReal)
     Poly_layer.CreateField(valueField)
 
     gdal.Polygonize(band,None,Poly_layer,0)
 
+    # 筛选
     strValue=0
     strFilter="Value='"+str(strValue)+"'"
     Poly_layer.SetAttributeFilter(strFilter) # 筛选Value=0的显示，但显然没有Value整个字段
@@ -55,7 +56,7 @@ def tif2shp(tif_path,shp_path):
 
         input=np.random.randint(5,10)/10 # 写入的字段
         # pFeature.SetField2(fieldName,input)
-        feature.SetField(NumOfDefn-1,input)
+        feature.SetField('confidence',input)
 
         Poly_layer.SetFeature(feature)
         feature=None
