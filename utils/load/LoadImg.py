@@ -78,7 +78,9 @@ class LoadOpenImg():
         self.xy_lt=self.lonlatz2xy(self.point_lonlat_lt,self.image_level)
         self.xy_rb=self.lonlatz2xy(self.point_lonlat_rb,self.image_level)
     
-    def build_url(self,xy):
+    def build_url(self,
+                  xy: XY
+                ):
         if self.image_source==ImgSource.GoogleMap:
              # TODO: support multi service choice
              return "http://khms0.google.com/kh/v=893?&x={x}&y={y}&z={z}".format(x=xy.x, y=xy.y, z=self.image_level)
@@ -88,11 +90,17 @@ class LoadOpenImg():
         elif self.image_source==ImgSource.Gaode:
              # TODO: support multi service choice
              return "http://wprd01.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scl=1&style=6&x={x}&y={y}&z={z}&ltype=3".format(x=xy.x, y=xy.y, z=self.image_level)
+        elif self.image_source==ImgSource.Tianditu:
+             # TODO: support multi service choice
+             return "http://t3.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=2ce94f67e58faa24beb7cb8a09780552".format(x=xy.x, y=xy.y, z=self.image_level)
         else:
             print('The '+self.image_source+' is not support!')
             return ''
 
-    def lonlatz2xy(self, lonlat, zoom):
+    def lonlatz2xy(self, 
+                   lonlat :LonLat, 
+                   zoom
+                ):
         n = math.pow(2, zoom)
         x = ((lonlat.lon + 180) / 360) * n
         y = (1 - (math.log(math.tan(math.radians(lonlat.lat)) + (1 / math.cos(math.radians(lonlat.lat)))) / math.pi)) / 2 * n
